@@ -1,5 +1,68 @@
+html {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.main {
+  display: flex;
+  flex: 1 1 auto;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.mdc-permanent-drawer .mdc-list-divider {
+  height: 0;
+  margin: 0;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.mdc-permanent-drawer .mdc-list-group {
+  display: inline-flex;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  flex-direction: column;
+}
+
+.mdc-permanent-drawer .mdc-list {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1.5rem;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+}
+
+.mdc-permanent-drawer .mdc-list-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  height: 48px;
+}
+
+.mdc-permanent-drawer .material-icons {
+  margin-right: 32px;
+}
+
+div#root {
+  height: 100%;
+}
+
 .App {
-  text-align: center;
+  height: 100%;
 }
 
 .App-logo {

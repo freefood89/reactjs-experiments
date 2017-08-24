@@ -7,6 +7,9 @@ import Dashboard from './Dashboard'
 import Home from './Home';
 import Item from './Item';
 import ToolBar from './ToolBar';
+import PermanentDrawer from './PermanentDrawer'
+
+import 'material-design-icons/iconfont/material-icons.css'
 
 class App extends Component {
   render() {
@@ -14,13 +17,16 @@ class App extends Component {
       <Router>
         <div className="App">
           <ToolBar />
-          <main className="mdc-toolbar-fixed-adjust">
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/dashboard" component={Dashboard} />
-              <Route path="/item/:id" component={Item} />
-            </Switch>
-          </main>
+          <div className="main mdc-toolbar-fixed-adjust">
+            <PermanentDrawer />
+            <main>
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/dashboard" component={Dashboard} />
+                <Route path="/item/:id" component={Item} />
+              </Switch>
+            </main>
+          </div>
         </div>
       </Router>
     );
