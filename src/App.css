@@ -18,70 +18,10 @@ body {
   box-sizing: border-box;
 }
 
-.mdc-permanent-drawer .mdc-list-divider {
-  height: 0;
-  margin: 0;
-  border: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}
-
-.mdc-permanent-drawer .mdc-list-group {
-  display: inline-flex;
-  flex: 0 0 auto;
-  box-sizing: border-box;
-  flex-direction: column;
-}
-
-.mdc-permanent-drawer .mdc-list {
-  display: inline-flex;
-  flex-direction: column;
-  line-height: 1.5rem;
-  box-sizing: border-box;
-  flex: 0 0 auto;
-}
-
-.mdc-permanent-drawer .mdc-list-item {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
-  height: 48px;
-}
-
-.mdc-permanent-drawer .material-icons {
-  margin-right: 32px;
-}
-
 div#root {
   height: 100%;
 }
 
 .App {
   height: 100%;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
