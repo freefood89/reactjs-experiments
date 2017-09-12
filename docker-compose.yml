@@ -5,6 +5,6 @@ services:
     ports:
     - "8080:8080"
     volumes:
-    - ./build:/etc/nginx/html
+    - ./build:/etc/nginx/html/ui
     - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
 

@@ -1,20 +1,13 @@
-FROM node:8
-
-ARG WORKDIR=/home
-
-WORKDIR $WORKDIR
-
+FROM node:8 as builder
+WORKDIR /home
 RUN npm install -g yarn
+COPY package.json .
+COPY yarn.lock .
+RUN yarn install
+ADD . /home
+RUN yarn build
 
-COPY package.json /tmp/package.json
-COPY yarn.lock /tmp/yarn.lock
-
-RUN cd /tmp && \
-    yarn install && \
-    mv node_modules $WORKDIR/node_modules
-
-ADD . $WORKDIR
-
-EXPOSE 3000
-
-RUN yarn start
+FROM nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /home/build /etc/nginx/html/ui
+EXPOSE 8080

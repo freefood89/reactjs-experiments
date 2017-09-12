@@ -26,7 +26,7 @@ import Dashboard from './Dashboard'
 
 import Home from './Home';
 import Item from './Item';
-
+import NoMatch from './NoMatch';
 import './App.css'
 import 'material-design-icons/iconfont/material-icons.css'
 
@@ -73,10 +73,12 @@ const styles = theme => ({
     position: 'relative',
     height: 'auto',
     width: drawerWidth,
+    height: '100%',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    overflowX: 'hidden'
   },
   drawerPaperClose: {
     width: 60,
@@ -133,7 +135,7 @@ class App extends Component {
   render() {
     const classes = this.props.classes;
     return (
-      <Router className={classes.root}>
+      <Router className={classes.root} basename="/ui">
         <div className={classes.appFrame}>
           <AppBar className={classNames(classes.appBar, this.state.open && classes.appBarShift)}>
             <Toolbar disableGutters={!this.state.open}>
@@ -165,25 +167,25 @@ class App extends Component {
               </div>
               <Divider />
               <List className={classes.list}>
-                <ListItem button>
+                <ListItem button component={Link} to={'/items'}>
                   <ListItemIcon>
                     <DashboardIcon />
                   </ListItemIcon>
                   <ListItemText primary="Dashboard" />
                 </ListItem>
-                <ListItem button>
+                <ListItem button component={Link} to={'/devices'}>
                   <ListItemIcon>
                     <MemoryIcon />
                   </ListItemIcon>
                   <ListItemText primary="Devices" />
                 </ListItem>
-                <ListItem button>
+                <ListItem button component={Link} to={'/metrics'}>
                   <ListItemIcon>
                     <ShowChartIcon />
                   </ListItemIcon>
                   <ListItemText primary="Metrics" />
                 </ListItem>
-                <ListItem button>
+                <ListItem button component={Link} to={'/events'}>
                   <ListItemIcon>
                     <EventAvailableIcon />
                   </ListItemIcon>
@@ -192,7 +194,7 @@ class App extends Component {
               </List>
               <Divider />
               <List className={classes.list}>
-                <ListItem button>
+                <ListItem button component={Link} to={'/settings'}>
                   <ListItemIcon>
                     <SettingsIcon />
                   </ListItemIcon>
@@ -206,6 +208,7 @@ class App extends Component {
                 <Route exact path="/" component={Home} />
                 <Route exact path="/items" component={Dashboard} />
                 <Route path="/item/:id" component={Item} />
+                <Route component={NoMatch}/>
               </Switch>
             </main>
         </div>
