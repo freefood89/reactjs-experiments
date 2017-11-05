@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Switch, Route } from 'react-router';
 import { BrowserRouter as Router, Link } from 'react-router-dom'
 
 import PropTypes from 'prop-types'
-
+import { connect } from 'react-redux'
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 import Drawer from 'material-ui/Drawer';
@@ -20,16 +20,21 @@ import ShowChartIcon from 'material-ui-icons/ShowChart'
 import MemoryIcon from 'material-ui-icons/Memory'
 import SettingsIcon from 'material-ui-icons/Settings';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
-import InboxIcon from 'material-ui-icons/Inbox';
-import DraftsIcon from 'material-ui-icons/Drafts';
 import Dashboard from './Dashboard'
+
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from 'material-ui/Dialog';
 
 import Home from './Home';
 import Item from './Item';
 import NoMatch from './NoMatch';
 import './App.css'
 import 'material-design-icons/iconfont/material-icons.css'
-
+import { closeDialog } from './actions'
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -71,7 +76,6 @@ const styles = theme => ({
   },
   drawerPaper: {
     position: 'relative',
-    height: 'auto',
     width: drawerWidth,
     height: '100%',
     transition: theme.transitions.create('width', {
@@ -115,7 +119,7 @@ const styles = theme => ({
   },
 });
 
-class App extends Component {
+class App extends React.Component {
   state = {
     open: false,
   };
@@ -210,6 +214,14 @@ class App extends Component {
                 <Route path="/item/:id" component={Item} />
                 <Route component={NoMatch}/>
               </Switch>
+              <Dialog open={this.props.isDialogOpen} onRequestClose={this.props.closeDialog}>
+                <DialogContent>
+                  <DialogContentText>
+                    Let Google help apps determine location. This means sending anonymous location data to
+                    Google, even when no apps are running.
+                  </DialogContentText>
+                </DialogContent>
+              </Dialog>
             </main>
         </div>
       </Router>
@@ -217,4 +229,24 @@ class App extends Component {
   }
 }
 
-export default withStyles(styles)(App);
+const AppComponent = withStyles(styles)(App);
+
+const mapStateToProps = state => ({
+  isDialogOpen: state.view.dialog.open,
+})
+
+const mapDispatchToProps = dispatch => ({
+  closeDialog: () => { dispatch(closeDialog()) },
+})
+
+const AppContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AppComponent)
+
+export {
+  AppComponent,
+  AppContainer as default,
+}
+
+
