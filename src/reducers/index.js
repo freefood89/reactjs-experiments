@@ -2,24 +2,42 @@ import { combineReducers } from 'redux'
 
 const OPEN_DIALOG = 'OPEN_DIALOG'
 const CLOSE_DIALOG = 'CLOSE_DIALOG'
+const SET_DIALOG_CONTENT = 'SET_DIALOG_CONTENT'
+const CLEAR_DIALOG_CONTENT = 'CLEAR_DIALOG_CONTENT'
 
-const isDialogOpen = (view = { dialog: { open: false } }, action) => {
-  let newState = Object.assign({}, view)
+const updateDialogVisibility = (open = false, action) => {
   switch (action.type) {
     case OPEN_DIALOG:
-      newState.dialog.open = true
-      return newState
+      return true
     case CLOSE_DIALOG:
-      newState.dialog.open = false
-      return newState
+      return false
     default:
-      return newState
+      return open
   }
 }
 
+const updateDialogContent = (content = [], action) => {
+  switch (action.type) {
+    case SET_DIALOG_CONTENT:
+      return action.content
+    case CLEAR_DIALOG_CONTENT:
+      return []
+    default:
+      return content
+  }
+}
+
+const dialogReducer = combineReducers({
+  open: updateDialogVisibility,
+  content: updateDialogContent,
+})
+
+const viewReducer = combineReducers({
+  dialog: dialogReducer,
+})
+
 const reducers = combineReducers({
-  isDialogOpen,
-  view: isDialogOpen,
+  view: viewReducer,
 })
 
 export default reducers

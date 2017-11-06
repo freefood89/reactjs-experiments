@@ -3,8 +3,17 @@ import { connect } from 'react-redux'
 import { withStyles } from 'material-ui/styles'
 
 import Button from 'material-ui/Button'
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from 'material-ui/Dialog';
 
-import { openDialog } from './actions'
+import {
+  openDialog,
+  setDialogContent,
+} from './actions'
 
 class Dashboard extends React.Component {
   render() {
@@ -13,7 +22,16 @@ class Dashboard extends React.Component {
         <h1>Dashboard</h1>
         <Button
           raised
-          onClick={this.props.onButtonClick}>
+          onClick={() => {
+            this.props.setDialogContent(
+              <DialogContent>
+                <DialogContentText>
+                  hello
+                </DialogContentText>
+              </DialogContent>
+            )
+            this.props.openDialog()
+          }}>
           button
         </Button>
       </div>
@@ -29,7 +47,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  onButtonClick: () => { dispatch(openDialog()) },
+  openDialog: () => { dispatch(openDialog()) },
+  setDialogContent: (content) => { dispatch(setDialogContent(content)) },
 })
 
 const DashboardContainer = connect(

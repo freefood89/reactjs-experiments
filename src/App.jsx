@@ -215,12 +215,7 @@ class App extends React.Component {
                 <Route component={NoMatch}/>
               </Switch>
               <Dialog open={this.props.isDialogOpen} onRequestClose={this.props.closeDialog}>
-                <DialogContent>
-                  <DialogContentText>
-                    Let Google help apps determine location. This means sending anonymous location data to
-                    Google, even when no apps are running.
-                  </DialogContentText>
-                </DialogContent>
+                { this.props.dialogContent }
               </Dialog>
             </main>
         </div>
@@ -233,6 +228,7 @@ const AppComponent = withStyles(styles)(App);
 
 const mapStateToProps = state => ({
   isDialogOpen: state.view.dialog.open,
+  dialogContent: state.view.dialog.content,
 })
 
 const mapDispatchToProps = dispatch => ({
