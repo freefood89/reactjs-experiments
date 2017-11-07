@@ -8,12 +8,23 @@ import Dialog, {
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from 'material-ui/Dialog';
+} from 'material-ui/Dialog'
+
+import Poller from './Poller'
 
 import {
   openDialog,
   setDialogContent,
+  fetchStuff,
 } from './actions'
+
+const TextOnlyDialog = ({ message }) => (
+  <DialogContent>
+    <DialogContentText>
+      { message }
+    </DialogContentText>
+  </DialogContent>
+)
 
 class Dashboard extends React.Component {
   render() {
@@ -23,17 +34,12 @@ class Dashboard extends React.Component {
         <Button
           raised
           onClick={() => {
-            this.props.setDialogContent(
-              <DialogContent>
-                <DialogContentText>
-                  hello
-                </DialogContentText>
-              </DialogContent>
-            )
+            this.props.setDialogContent(<TextOnlyDialog message='hello' />)
             this.props.openDialog()
           }}>
           button
         </Button>
+        <Poller fetcher={ this.props.fetcher } data={ this.props.data } />
       </div>
     );
   }
@@ -44,11 +50,13 @@ const styles = theme => ({})
 const DashboardComponent = withStyles(styles)(Dashboard)
 
 const mapStateToProps = state => ({
+  data: state.data.stuff
 })
 
 const mapDispatchToProps = dispatch => ({
   openDialog: () => { dispatch(openDialog()) },
   setDialogContent: (content) => { dispatch(setDialogContent(content)) },
+  fetcher: () => { dispatch(fetchStuff()) }
 })
 
 const DashboardContainer = connect(

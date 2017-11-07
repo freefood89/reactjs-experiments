@@ -1,4 +1,5 @@
 import { applyMiddleware } from 'redux'
+import thunkMiddleware from 'redux-thunk'
 
 const logger = store => next => action => {
   console.log('dispatching', action)
@@ -9,6 +10,7 @@ const logger = store => next => action => {
 
 const middleware = applyMiddleware(
   logger,
+  thunkMiddleware,
 )
 
 export {
