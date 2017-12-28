@@ -5,9 +5,9 @@ import { createStore } from 'redux'
 import { MuiThemeProvider } from 'material-ui/styles'
 import registerServiceWorker from './registerServiceWorker'
 
-import App from './App.jsx'
-import reducers from './reducers'
-import middleware from './middleware'
+import App from 'views'
+import reducers from 'reducers'
+import middleware from 'middleware'
 import theme from './theme'
 import './index.css'
 

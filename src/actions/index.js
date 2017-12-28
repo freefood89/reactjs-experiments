@@ -1,64 +1,29 @@
 import 'whatwg-fetch'
+import { makeActionCreator, makeBasicAjaxActionCreator } from 'actions/utils'
 
-const OPEN_DIALOG = 'OPEN_DIALOG'
-const CLOSE_DIALOG = 'CLOSE_DIALOG'
-const SET_DIALOG_CONTENT = 'SET_DIALOG_CONTENT'
-const CLEAR_DIALOG_CONTENT = 'CLEAR_DIALOG_CONTENT'
+export const OPEN_DRAWER = 'OPEN_DRAWER'
+export const CLOSE_DRAWER = 'CLOSE_DRAWER'
+export const openDrawer = makeActionCreator(OPEN_DRAWER)
+export const closeDrawer = makeActionCreator(CLOSE_DRAWER)
 
-const openDialog = (text = 'set dialog text') => {
+export const OPEN_DIALOG = 'OPEN_DIALOG'
+export const CLOSE_DIALOG = 'CLOSE_DIALOG'
+export const SET_DIALOG_CONTENT = 'SET_DIALOG_CONTENT'
+export const CLEAR_DIALOG_CONTENT = 'CLEAR_DIALOG_CONTENT'
+export const openDialog = makeActionCreator(OPEN_DIALOG)
+export const closeDialog = makeActionCreator(CLOSE_DIALOG)
+export const setDialogContent = makeActionCreator(SET_DIALOG_CONTENT, 'content')
+export const clearDialogContent = makeActionCreator(CLEAR_DIALOG_CONTENT)
+
+export const GET_POSTS_REQUEST = 'GET_POSTS_REQUEST'
+export const GET_POSTS_RECEIVE = 'GET_POSTS_RECEIVE'
+export const GET_POSTS_FAILURE = 'GET_POSTS_FAILURE'
+
+const baseUrl = 'http://localhost:9000' //'https://jsonplaceholder.typicode.com'
+
+export const fetchStuff = () => {
   return {
-    type: OPEN_DIALOG,
+    types: [GET_POSTS_REQUEST, GET_POSTS_RECEIVE, GET_POSTS_FAILURE],
+    callAPI: () => fetch(baseUrl + '/posts'),
   }
-}
-
-const closeDialog = () => {
-  return {
-    type: CLOSE_DIALOG,
-  }
-}
-
-const setDialogContent = (content) => {
-  return {
-    type: SET_DIALOG_CONTENT,
-    content: content,
-  }
-}
-
-const clearDialogContent = () => {
-  return {
-    type: CLEAR_DIALOG_CONTENT,
-  }
-}
-
-const REQUEST_STUFF = 'REQUEST_STUFF'
-const RECEIVE_STUFF = 'RECEIVE_STUFF'
-const FAILURE_STUFF = 'FAILURE_STUFF'
-
-export function requestStuff() {
-  return { type: REQUEST_STUFF }
-}
-
-export function receiveStuff(stuff) {
-  return {
-    type: RECEIVE_STUFF,
-    stuff: stuff,
-  }
-}
-
-const baseUrl = 'https://jsonplaceholder.typicode.com'
-
-export function fetchStuff() {
-  return dispatch => {
-    dispatch(requestStuff())
-    return fetch(baseUrl + '/posts')
-      .then((response) => response.json())
-      .then((json) => dispatch(receiveStuff(json)))
-  }
-}
-
-export {
-  openDialog,
-  closeDialog,
-  setDialogContent,
-  clearDialogContent,
 }

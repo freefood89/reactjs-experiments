@@ -28,11 +28,25 @@ const updateDialogContent = (content = [], action) => {
   }
 }
 
+const updateDrawerVisibility = (open = false, action) => {
+  switch (action.type) {
+    case 'OPEN_DRAWER':
+      return true
+    case 'CLOSE_DRAWER':
+      return false
+    default:
+      return open
+  }
+}
+
 const viewReducer = combineReducers({
   dialog: combineReducers({
     open: updateDialogVisibility,
     content: updateDialogContent,
   }),
+  drawer: combineReducers({
+    open: updateDrawerVisibility,
+  })
 })
 
 export default viewReducer

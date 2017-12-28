@@ -1,11 +1,15 @@
 import { combineReducers } from 'redux'
 
-const RECEIVE_STUFF = 'RECEIVE_STUFF'
+const GET_POSTS_RECEIVE = 'GET_POSTS_RECEIVE'
 
 const stuffReducer = (stuff = [], action) => {
   switch (action.type) {
-    case RECEIVE_STUFF:
-      return action.stuff
+    case GET_POSTS_RECEIVE:
+      stuff = action.response
+        // .then(function(data) {
+        //   stuff = data
+        // })
+      return stuff
     case 'CLEAR_STUFF':
       return []
     default:
