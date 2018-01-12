@@ -19,6 +19,8 @@ import NoMatch from 'NoMatch';
 import 'App.css'
 import 'material-design-icons/iconfont/material-icons.css'
 import { closeDialog } from 'actions'
+import { dispatcher } from 'config/poller/inject'
+import Dispatcher from '../dispatcher';
 
 const drawerWidth = 240;
 
@@ -99,7 +101,9 @@ class App extends React.Component {
   }
 }
 
-const AppComponent = withStyles(styles)(App);
+const d = new Dispatcher()
+let AppComponent = withStyles(styles)(App);
+AppComponent = dispatcher(d, AppComponent)
 
 const mapStateToProps = state => ({
   isDialogOpen: state.view.dialog.open,

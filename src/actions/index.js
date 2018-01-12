@@ -1,5 +1,9 @@
-import 'whatwg-fetch'
-import { makeActionCreator, makeBasicAjaxActionCreator } from 'actions/utils'
+import axios from 'axios'
+import axiosRetry from 'axios-retry'
+import { makeActionCreator } from 'actions/utils'
+
+const client = axios.create({ baseURL: 'http://localhost:9000' })
+axiosRetry(client, {retries: 3 })
 
 export const OPEN_DRAWER = 'OPEN_DRAWER'
 export const CLOSE_DRAWER = 'CLOSE_DRAWER'
@@ -24,6 +28,6 @@ const baseUrl = 'http://localhost:9000' //'https://jsonplaceholder.typicode.com'
 export const fetchStuff = () => {
   return {
     types: [GET_POSTS_REQUEST, GET_POSTS_RECEIVE, GET_POSTS_FAILURE],
-    callAPI: () => fetch(baseUrl + '/posts'),
+    callAPI: () => client.get('/posts'),
   }
 }

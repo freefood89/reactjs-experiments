@@ -6,11 +6,9 @@ import { connect } from 'react-redux';
 
 import MuiDrawer from 'material-ui/Drawer'
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
-import Typography from 'material-ui/Typography'
 import Divider from 'material-ui/Divider'
 import IconButton from 'material-ui/IconButton'
 import DashboardIcon from 'material-ui-icons/Dashboard'
-import MenuIcon from 'material-ui-icons/Menu'
 import EventAvailableIcon from 'material-ui-icons/EventAvailable'
 import ShowChartIcon from 'material-ui-icons/ShowChart'
 import MemoryIcon from 'material-ui-icons/Memory'

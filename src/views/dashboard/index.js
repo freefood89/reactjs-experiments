@@ -4,19 +4,18 @@ import { withStyles } from 'material-ui/styles'
 
 import Button from 'material-ui/Button'
 import {
-  DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
 } from 'material-ui/Dialog'
 
-import Poller from 'Poller'
-
+import { inject } from 'config/poller/inject'
 import {
   openDialog,
   setDialogContent,
   fetchStuff,
 } from 'actions'
+
+import Dispatcher from 'dispatcher'
 
 const TextOnlyDialog = ({ message }) => (
   <DialogContent>
@@ -27,6 +26,14 @@ const TextOnlyDialog = ({ message }) => (
 )
 
 class Dashboard extends React.Component {
+  componentWillMount() {
+    this.props.dispatcher.register('lol', this.props.fetcher)
+  }
+
+  componentWillUnmount() {
+    this.props.dispatcher.deregister('lol')
+  }
+
   render() {
     const {fetcher, stuff, openDialog, setDialogContent} = this.props
     return (
@@ -40,7 +47,6 @@ class Dashboard extends React.Component {
           }}>
           button
         </Button>
-        <Poller fetcher={ fetcher } data={ stuff } />
         <ul>
           { stuff.map((item, ind) => <li key={ind}>{item.title}</li>) }
         </ul>
@@ -51,7 +57,7 @@ class Dashboard extends React.Component {
 
 const styles = theme => ({})
 
-const DashboardComponent = withStyles(styles)(Dashboard)
+const DashboardComponent = inject(withStyles(styles)(Dashboard))
 
 const mapStateToProps = state => ({
   stuff: state.data.stuff

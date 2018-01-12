@@ -42,24 +42,26 @@ function callAPIMiddleware({ dispatch, getState }) {
 
     dispatch(
       Object.assign({}, payload, {
-        type: requestType
+        type: requestType,
+        timestamp: Date.now(),
       })
     )
 
     return callAPI()
-      .then(response => response.json())
-      .then(data =>
+      .then(response =>
         dispatch(
           Object.assign({}, payload, {
-            response: data,
-            type: successType
+            response: response.data,
+            type: successType,
+            timestamp: Date.now(),
           })
         ))
       .catch(error =>
         dispatch(
           Object.assign({}, payload, {
             error,
-            type: failureType
+            type: failureType,
+            timestamp: Date.now(),
           })
         ))
   }
