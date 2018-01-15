@@ -35,7 +35,7 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    const {fetcher, stuff, openDialog, setDialogContent} = this.props
+    const {fetcher, posts, openDialog, setDialogContent} = this.props
     return (
       <div>
         <h1>Dashboard</h1>
@@ -48,7 +48,11 @@ class Dashboard extends React.Component {
           button
         </Button>
         <ul>
-          { stuff.map((item, ind) => <li key={ind}>{item.title}</li>) }
+          {
+            Object.values(posts.byId).map((item, ind) => (
+              <li key={ind}>{item.title}</li>)
+            )
+          }
         </ul>
       </div>
     );
@@ -60,7 +64,7 @@ const styles = theme => ({})
 const DashboardComponent = inject(withStyles(styles)(Dashboard))
 
 const mapStateToProps = state => ({
-  stuff: state.data.stuff
+  posts: state.data.posts
 })
 
 const mapDispatchToProps = dispatch => ({

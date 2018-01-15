@@ -2,23 +2,23 @@ import { combineReducers } from 'redux'
 
 const GET_POSTS_RECEIVE = 'GET_POSTS_RECEIVE'
 
-const stuffReducer = (stuff = [], action) => {
+const postsReducer = (posts = { byId: {} }, action) => {
   switch (action.type) {
     case GET_POSTS_RECEIVE:
-      stuff = action.response
-        // .then(function(data) {
-        //   stuff = data
-        // })
-      return stuff
-    case 'CLEAR_STUFF':
+      let newPosts = { byId: {} }
+      action.response.posts.map((post) => {
+        newPosts.byId[post.id] = post
+      })
+      return newPosts
+    case 'CLEAR_POSTS':
       return []
     default:
-      return stuff
+      return posts
   }
 }
 
 const dataReducer = combineReducers({
-  stuff: stuffReducer,
+  posts: postsReducer,
 })
 
 export default dataReducer
