@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { withStyles } from 'material-ui/styles';
 
 import Dashboard from 'views/dashboard'
+import Devices from 'views/devices'
 
 import Dialog from 'material-ui/Dialog';
 
@@ -90,9 +91,10 @@ class App extends React.Component {
               <Route exact path="/" component={Home} />
               <Route exact path="/items" component={Dashboard} />
               <Route path="/item/:id" component={Item} />
+              <Route exact path="/devices" component={Devices} />
               <Route component={NoMatch}/>
             </Switch>
-            <Dialog open={isDialogOpen} onRequestClose={closeDialog}>
+            <Dialog open={isDialogOpen} onClose={closeDialog}>
               { this.props.dialogContent }
             </Dialog>
           </main>
