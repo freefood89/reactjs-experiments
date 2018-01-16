@@ -63,10 +63,11 @@ const styles = theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: 24,
-    height: 'calc(100% - 56px)',
+    maxHeight: 'calc(100% - 56px)',
     marginTop: 56,
+    overflowY: 'scroll',
     [theme.breakpoints.up('sm')]: {
-      height: 'calc(100% - 64px)',
+      maxHeight: 'calc(100% - 64px)',
       marginTop: 64,
     },
   },

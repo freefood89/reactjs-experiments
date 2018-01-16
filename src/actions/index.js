@@ -23,8 +23,6 @@ export const GET_POSTS_REQUEST = 'GET_POSTS_REQUEST'
 export const GET_POSTS_RECEIVE = 'GET_POSTS_RECEIVE'
 export const GET_POSTS_FAILURE = 'GET_POSTS_FAILURE'
 
-const baseUrl = 'http://localhost:9000' //'https://jsonplaceholder.typicode.com'
-
 export const fetchStuff = () => {
   return {
     types: [GET_POSTS_REQUEST, GET_POSTS_RECEIVE, GET_POSTS_FAILURE],

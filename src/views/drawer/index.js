@@ -25,6 +25,7 @@ const styles = theme => ({
   },
   drawerPaper: {
     position: 'relative',
+    zIndex: theme.zIndex.navDrawer,
     width: drawerWidth,
     height: '100%',
     transition: theme.transitions.create('width', {

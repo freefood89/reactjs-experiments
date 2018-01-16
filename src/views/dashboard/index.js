@@ -7,15 +7,23 @@ import {
   DialogContent,
   DialogContentText,
 } from 'material-ui/Dialog'
-
+import Table, {
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TablePagination,
+  TableRow,
+} from 'material-ui/Table'
+import Paper from 'material-ui/Paper'
+import Checkbox from 'material-ui/Checkbox'
+import Typography from 'material-ui/Typography'
 import { inject } from 'config/poller/inject'
 import {
   openDialog,
   setDialogContent,
   fetchStuff,
 } from 'actions'
-
-import Dispatcher from 'dispatcher'
 
 const TextOnlyDialog = ({ message }) => (
   <DialogContent>
@@ -26,6 +34,12 @@ const TextOnlyDialog = ({ message }) => (
 )
 
 class Dashboard extends React.Component {
+  state = {
+    selected: {},
+    rowsPerPage: 5,
+    page: 0,
+  }
+
   componentWillMount() {
     this.props.dispatcher.register('lol', this.props.fetcher)
   }
@@ -34,32 +48,125 @@ class Dashboard extends React.Component {
     this.props.dispatcher.deregister('lol')
   }
 
+  handleClickSelectAll() {
+    const { posts } = this.props
+    const { selected } = this.state
+    const numSelected = Object.values(selected).filter(val => val===true).length
+    const numPosts = Object.keys(posts.byId).length
+
+    if (numSelected===numPosts) {
+      Object.keys(posts.byId).map(id => selected[id]=false)
+    } else {
+      Object.keys(posts.byId).map(id => selected[id]=true)
+    }
+
+    this.setState({
+      selected: selected
+    })
+  }
+
+  handleClick(e, id) {
+    this.setState({
+      selected: {...this.state.selected,
+        [id]: this.state.selected[id] ? false : true
+      }
+    })
+  }
+
+  handleChangePage(e, page) {
+    this.setState({ page });
+  }
+
+  handleChangeRowsPerPage(e) {
+    this.setState({ rowsPerPage: e.target.value });
+  }
+
   render() {
-    const {fetcher, posts, openDialog, setDialogContent} = this.props
+    const {fetcher, posts, openDialog, setDialogContent, classes} = this.props
+    const { selected, rowsPerPage, page } = this.state;
+    // const emptyRows = rowsPerPage - Math.min(rowsPerPage, Object.values(posts.byId).length - page * rowsPerPage);
+
+    const numSelected = Object.values(selected).filter(val => val===true).length
+    const numPosts = Object.keys(posts.byId).length
     return (
       <div>
-        <h1>Dashboard</h1>
-        <Button
+        <div className={classes.title}>
+          <Typography type='title'>Posts</Typography>
+        </div>
+        {/* <Button
           raised
           onClick={() => {
             setDialogContent(<TextOnlyDialog message='hello' />)
             openDialog()
           }}>
           button
-        </Button>
-        <ul>
-          {
-            Object.values(posts.byId).map((item, ind) => (
-              <li key={ind}>{item.title}</li>)
-            )
-          }
-        </ul>
+        </Button> */}
+        <Paper className={classes.tableWrapper}>
+        <Table className={classes.table}>
+          <TableHead>
+            <TableRow role="checkbox" aria-checked={numPosts === numSelected}>
+              <TableCell padding="checkbox" style={{width:49}}>
+                <Checkbox
+                  checked={numPosts === numSelected}
+                  onClick={event => this.handleClickSelectAll(event)}
+                  indeterminate={numSelected>0 && numSelected<numPosts}
+                />
+              </TableCell>
+              <TableCell>Title</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {
+              Object.values(posts.byId).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, ind) => {
+                const postIsSelected = this.state.selected[item.id] === true
+                return (
+                  <TableRow
+                    hover
+                    key={item.id}
+                    onClick={event => this.handleClick(event, item.id)}
+                    role="checkbox"
+                    aria-checked={postIsSelected}>
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        checked={postIsSelected}
+                      />
+                    </TableCell>
+                    <TableCell>{item.title}</TableCell>
+                  </TableRow>
+                )
+              })
+            }
+          </TableBody>
+          <TableFooter>
+            <TablePagination
+              count={numPosts}
+              rowsPerPage={this.state.rowsPerPage}
+              page={this.state.page}
+              backIconButtonProps={{ 'aria-label': 'Previous Page' }}
+              nextIconButtonProps={{ 'aria-label': 'Next Page' }}
+              onChangePage={this.handleChangePage.bind(this)}
+              onChangeRowsPerPage={this.handleChangeRowsPerPage.bind(this)}
+            />
+          </TableFooter>
+        </Table>
+        </Paper>
       </div>
     );
   }
 }
 
-const styles = theme => ({})
+const styles = theme => ({
+  title: {
+    paddingBottom: 20,
+  },
+  table: {
+    minWidth: 800,
+  },
+  tableWrapper: {
+    overflowX: 'auto',
+    width: 'fit-content'
+  },
+})
 
 const DashboardComponent = inject(withStyles(styles)(Dashboard))
 

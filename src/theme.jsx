@@ -1,10 +1,13 @@
 import { createMuiTheme } from 'material-ui/styles'
-import blueGrey from 'material-ui/colors/blueGrey'
+import blue from 'material-ui/colors/blue'
 
 const theme = createMuiTheme({
-    palette: {
-        primary: blueGrey,
-    }
+  palette: {
+    primary: { light: blue[300], main: blue[500], dark: blue[700] }
+  },
+  zIndex: {
+    navDrawer: 5,
+  }
 })
 
 export default theme

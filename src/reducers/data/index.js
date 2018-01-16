@@ -6,9 +6,7 @@ const postsReducer = (posts = { byId: {} }, action) => {
   switch (action.type) {
     case GET_POSTS_RECEIVE:
       let newPosts = { byId: {} }
-      action.response.posts.map((post) => {
-        newPosts.byId[post.id] = post
-      })
+      action.response.posts.map(post => newPosts.byId[post.id]=post)
       return newPosts
     case 'CLEAR_POSTS':
       return []
