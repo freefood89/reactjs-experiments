@@ -6,10 +6,29 @@ import { MuiThemeProvider } from 'material-ui/styles'
 import registerServiceWorker from './registerServiceWorker'
 
 import App from 'views'
-import reducers from 'reducers'
 import middleware from 'middleware'
 import theme from './theme'
 import './index.css'
+
+import { combineReducers } from 'redux'
+import { updateDialogVisibility, updateDialogContent } from 'views/dialog/reducers'
+import { updateDrawerVisibility } from 'views/drawer/reducers'
+import postsReducer from 'views/devices/reducers'
+
+const reducers = combineReducers({
+  data: combineReducers({
+    posts: postsReducer,
+  }),
+  view: combineReducers({
+    dialog: combineReducers({
+      open: updateDialogVisibility,
+      content: updateDialogContent,
+    }),
+    drawer: combineReducers({
+      open: updateDrawerVisibility,
+    })
+  })
+})
 
 let store = createStore(
   reducers,

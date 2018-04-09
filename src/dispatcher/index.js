@@ -1,4 +1,4 @@
-const DEFAULT_TIMEOUT = 5000
+const DEFAULT_TIMEOUT = 60000
 
 export default class Dispatcher {
   constructor() {
@@ -17,10 +17,15 @@ export default class Dispatcher {
       this.timeoutHandlers[name] = handler
     }
 
-    handler(this.timeouts)
+    handler()
   }
 
   deregister(name) {
     clearTimeout(this.timeouts[name])
+  }
+
+  refresh(name) {
+    const handler = this.timeoutHandlers[name]
+    handler()
   }
 }

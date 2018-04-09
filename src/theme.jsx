@@ -7,6 +7,9 @@ const theme = createMuiTheme({
   },
   zIndex: {
     navDrawer: 5,
+  },
+  dimensions: {
+    drawerWidth: 240,
   }
 })
 

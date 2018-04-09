@@ -9,10 +9,12 @@ app = express()
 app.use(bodyParser.json())
 
 app.get('/posts', (req, res) => {
-	res.json({
-    posts: posts,
-    count: posts.length,
-  })
+	setTimeout(() => {
+    res.json({
+      posts: posts,
+      count: posts.length,
+    })
+  }, 3000)
 })
 
 app.post('/posts', (req, res) => {

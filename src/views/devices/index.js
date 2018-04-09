@@ -2,11 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from 'material-ui/styles'
 
-import Button from 'material-ui/Button'
-import {
-  DialogContent,
-  DialogContentText,
-} from 'material-ui/Dialog'
 import Table, {
   TableBody,
   TableCell,
@@ -16,22 +11,13 @@ import Table, {
   TableRow,
 } from 'material-ui/Table'
 import Paper from 'material-ui/Paper'
+import { CircularProgress } from 'material-ui/Progress'
 import Checkbox from 'material-ui/Checkbox'
-import Typography from 'material-ui/Typography'
 import { inject } from 'config/poller/inject'
-import {
-  openDialog,
-  setDialogContent,
-  fetchStuff,
-} from 'actions'
+import { fetchStuff } from 'views/devices/actions'
 
-const TextOnlyDialog = ({ message }) => (
-  <DialogContent>
-    <DialogContentText>
-      { message }
-    </DialogContentText>
-  </DialogContent>
-)
+import Container from 'components/Container'
+import Header from './components/Header'
 
 class Devices extends React.Component {
   state = {
@@ -82,75 +68,79 @@ class Devices extends React.Component {
   }
 
   render() {
-    const {fetcher, posts, openDialog, setDialogContent, classes} = this.props
-    const { selected, rowsPerPage, page } = this.state;
+    const { posts, classes } = this.props
+    const { selected, rowsPerPage, page } = this.state
     // const emptyRows = rowsPerPage - Math.min(rowsPerPage, Object.values(posts.byId).length - page * rowsPerPage);
 
     const numSelected = Object.values(selected).filter(val => val===true).length
-    const numPosts = Object.keys(posts.byId).length
+
+    let numPosts
+    if (posts.byId) {
+      numPosts = Object.keys(posts.byId).length
+    }
+
     return (
-      <div>
-        <div className={classes.title}>
-          <Typography type='title'>Devices</Typography>
-        </div>
-        {/* <Button
-          raised
-          onClick={() => {
-            setDialogContent(<TextOnlyDialog message='hello' />)
-            openDialog()
-          }}>
-          button
-        </Button> */}
-        <Paper className={classes.tableWrapper}>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow role="checkbox" aria-checked={numSelected>0 && numPosts === numSelected}>
-              <TableCell padding="checkbox" style={{width:49}}>
-                <Checkbox
-                  checked={numSelected>0 && numPosts === numSelected}
-                  onClick={event => this.handleClickSelectAll(event)}
-                  indeterminate={numSelected>0 && numSelected<numPosts}
+      <Container>
+        <Header />
+        <Paper className={classes.root}>
+          {/* <Typography type='title'>Devices</Typography> */}
+          {
+            posts.byId === undefined &&
+            posts.isFetching &&
+            <CircularProgress className={classes.progress} />
+          }
+          {
+            posts.byId !== undefined &&
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow role="checkbox" aria-checked={numSelected>0 && numPosts === numSelected}>
+                  <TableCell padding="checkbox" style={{width:49}}>
+                    <Checkbox
+                      checked={numSelected>0 && numPosts === numSelected}
+                      onClick={event => this.handleClickSelectAll(event)}
+                      indeterminate={numSelected>0 && numSelected<numPosts}
+                    />
+                  </TableCell>
+                  <TableCell>Device Name</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {
+                  Object.values(posts.byId).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, ind) => {
+                    const postIsSelected = this.state.selected[item.id] === true
+                    return (
+                      <TableRow
+                        hover
+                        key={item.id}
+                        onClick={event => this.handleClick(event, item.id)}
+                        role="checkbox"
+                        aria-checked={postIsSelected}>
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            checked={postIsSelected}
+                          />
+                        </TableCell>
+                        <TableCell>{item.title}</TableCell>
+                      </TableRow>
+                    )
+                  })
+                }
+              </TableBody>
+              <TableFooter>
+                <TablePagination
+                  count={numPosts}
+                  rowsPerPage={this.state.rowsPerPage}
+                  page={this.state.page}
+                  backIconButtonProps={{ 'aria-label': 'Previous Page' }}
+                  nextIconButtonProps={{ 'aria-label': 'Next Page' }}
+                  onChangePage={this.handleChangePage.bind(this)}
+                  onChangeRowsPerPage={this.handleChangeRowsPerPage.bind(this)}
                 />
-              </TableCell>
-              <TableCell>Device Name</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {
-              Object.values(posts.byId).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, ind) => {
-                const postIsSelected = this.state.selected[item.id] === true
-                return (
-                  <TableRow
-                    hover
-                    key={item.id}
-                    onClick={event => this.handleClick(event, item.id)}
-                    role="checkbox"
-                    aria-checked={postIsSelected}>
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={postIsSelected}
-                      />
-                    </TableCell>
-                    <TableCell>{item.title}</TableCell>
-                  </TableRow>
-                )
-              })
-            }
-          </TableBody>
-          <TableFooter>
-            <TablePagination
-              count={numPosts}
-              rowsPerPage={this.state.rowsPerPage}
-              page={this.state.page}
-              backIconButtonProps={{ 'aria-label': 'Previous Page' }}
-              nextIconButtonProps={{ 'aria-label': 'Next Page' }}
-              onChangePage={this.handleChangePage.bind(this)}
-              onChangeRowsPerPage={this.handleChangeRowsPerPage.bind(this)}
-            />
-          </TableFooter>
-        </Table>
+              </TableFooter>
+            </Table>
+          }
         </Paper>
-      </div>
+      </Container>
     );
   }
 }
@@ -159,12 +149,16 @@ const styles = theme => ({
   title: {
     paddingBottom: 20,
   },
-  table: {
+  root: {
     minWidth: 800,
-  },
-  tableWrapper: {
+    margin: 12,
     overflowX: 'auto',
     width: 'fit-content'
+  },
+  progress: {
+    // margin: `0 ${theme.spacing.unit * 2}px`,
+    display: 'block',
+    margin: '0 auto'
   },
 })
 
@@ -175,8 +169,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  openDialog: () => { dispatch(openDialog()) },
-  setDialogContent: (content) => { dispatch(setDialogContent(content)) },
+  // openDialog: () => { dispatch(openDialog()) },
+  // setDialogContent: (content) => { dispatch(setDialogContent(content)) },
   fetcher: () => { dispatch(fetchStuff()) }
 })
 

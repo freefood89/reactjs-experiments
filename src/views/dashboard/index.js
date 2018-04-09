@@ -1,58 +1,87 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from 'material-ui/styles'
+import { Link } from 'react-router-dom'
 
 import Button from 'material-ui/Button'
-import {
-  DialogContent,
-  DialogContentText,
-} from 'material-ui/Dialog'
 
-import Paper from 'material-ui/Paper'
-import Checkbox from 'material-ui/Checkbox'
+import Card, {
+  CardActions,
+  CardContent,
+} from 'material-ui/Card'
+
+import Grid from 'material-ui/Grid'
+
 import Typography from 'material-ui/Typography'
 import { inject } from 'config/poller/inject'
 import {
   openDialog,
   setDialogContent,
-  fetchStuff,
-} from 'actions'
+} from 'views/dialog/actions'
 
-const TextOnlyDialog = ({ message }) => (
-  <DialogContent>
-    <DialogContentText>
-      { message }
-    </DialogContentText>
-  </DialogContent>
-)
+import Container from 'components/Container'
 
 class Dashboard extends React.Component {
   render() {
-    const {fetcher, posts, openDialog, setDialogContent, classes} = this.props
+    const { classes } = this.props
     return (
-      <div>
-        <div className={classes.title}>
-          <Typography type='title'>Dashboard</Typography>
-        </div>
-        <Button
-          raised
-          onClick={() => {
-            setDialogContent(<TextOnlyDialog message='hello' />)
-            openDialog()
-          }}>
-          button
-        </Button>
-        <Paper className={classes.tableWrapper}>
+      <Container>
+        <Grid container className={classes.root}>
+          {/* <div className={classes.title}>
+            <Typography type='title'>Dashboard</Typography>
+          </div>
+          <Button
+            raised
+            onClick={() => {
+              setDialogContent(<TextOnlyDialog message='hello' />)
+              openDialog()
+            }}>
+            button
+          </Button> */}
+          <Grid item xs={12} sm={6} lg={4}>
+            <Card className={classes.card}>
+              <CardContent>
+                <Typography type='title'>Devices</Typography>
+              </CardContent>
+              <CardActions>
+                <Button dense color='primary' to={'./devices'} component={Link}>Manage</Button>
+                <Button dense color='primary'>Learn More</Button>
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={4}>
+            <Card className={classes.card}>
+              <CardContent>
+                <Typography type='title'>Metrics</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={4}>
+            <Card className={classes.card}>
+              <CardContent>
+                <Typography type='title'>Events</Typography>
 
-        </Paper>
-      </div>
+              </CardContent>
+              <CardActions>
+                <Button dense color='primary' to={'./events'} component={Link}>View all</Button>
+                <Button dense color='primary'>Learn More</Button>
+              </CardActions>
+            </Card>
+          </Grid>
+        </Grid>
+      </Container>
     );
   }
 }
 
 const styles = theme => ({
-  title: {
-    paddingBottom: 20,
+  card: {
+    // minWidth: 296,
+  },
+  root: {
+    minWidth: 560,
+    maxWidth: 1400,
+    padding: 12,
   },
   table: {
     minWidth: 800,
@@ -72,7 +101,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   openDialog: () => { dispatch(openDialog()) },
   setDialogContent: (content) => { dispatch(setDialogContent(content)) },
-  fetcher: () => { dispatch(fetchStuff()) }
 })
 
 const DashboardContainer = connect(

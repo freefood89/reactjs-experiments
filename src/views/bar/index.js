@@ -5,13 +5,10 @@ import classNames from 'classnames'
 
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
-import Typography from 'material-ui/Typography'
 import IconButton from 'material-ui/IconButton'
 import MenuIcon from 'material-ui-icons/Menu'
 
-import { openDrawer } from 'actions'
-
-const drawerWidth = 240
+import { openDrawer } from 'views/drawer/actions'
 
 const styles = theme => ({
   appFrame: {
@@ -23,45 +20,85 @@ const styles = theme => ({
   hide: {
     display: 'none',
   },
-  menuButton: {
-    marginLeft: 12,
-    marginRight: 12,
+  headerWrapper: {
+    position: 'fixed',
+    top: 0,
+    left: 72,
+    right: 72,
+
+    verticalAlign: 'baseline',
+    '-webkit-font-smoothing': 'antialiased',
+  },
+  headerTitle: {
+    fontSize: 18,
+  },
+  sectionTitle: {
+    float: 'left',
+  },
+  chapterTitle: {
+    float: 'left',
+  },
+  titleSeparator: {
+    width: '0.5em',
+    margin: '0 0.5em',
   },
   appBar: {
-    position: 'absolute',
-    zIndex: theme.zIndex.navDrawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
+    width: '100%',
+    zIndex: 6,
   },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+  bar: {
+    [theme.breakpoints.up('xs')]: {
+      lineHeight: '56px',
+      height: 56,
+      minHeight: 56,
+    },
+    [theme.breakpoints.up('md')]: {
+      lineHeight: '64px',
+      height: 64,
+      minHeight: 64,
+    },
+  },
+  menuButton: {
+    position: 'fixed',
+    color: 'white',
+    left: 12,
+    [theme.breakpoints.up('xs')]: {
+      top: 4,
+    },
+    [theme.breakpoints.up('md')]: {
+      top: 8,
+    },
   },
 })
 
 class Bar extends React.Component {
   render() {
-    const { classes, isDrawerOpen, openDrawer } = this.props
+    const { classes, openDrawer } = this.props
+    const separator = '–'
     return (
-      <AppBar className={classNames(classes.appBar, isDrawerOpen && classes.appBarShift)}>
-        <Toolbar disableGutters={!isDrawerOpen}>
+      <AppBar position='fixed' className={ classNames(classes.appBar, classes.bar) }>
+        <Toolbar disableGutters={ false } className={ classes.bar }>
           <IconButton
-            color="contrast"
+            color="default"
             aria-label="open drawer"
             onClick={openDrawer}
-            className={classNames(classes.menuButton, isDrawerOpen && classes.hide)}
+            className={ classes.menuButton }
           >
-            <MenuIcon />
+            <MenuIcon color="white"/>
           </IconButton>
-          <Typography type="title" color="inherit" noWrap>
-            Mini variant drawer
-          </Typography>
+          <div className={ classes.headerWrapper }>
+            <div className={ classes.headerTitle }>
+              <span className={ classes.sectionTitle}>
+                Title
+              </span>
+              <span className={ classes.chapterTitle }>
+                <span className={ classes.titleSeparator }>
+                  { separator }
+                </span>
+                Section
+              </span>
+            </div>
+          </div>
         </Toolbar>
       </AppBar>
     )

@@ -8,22 +8,18 @@ import { withStyles } from 'material-ui/styles';
 
 import Dashboard from 'views/dashboard'
 import Devices from 'views/devices'
-
+import Events from 'views/events'
+import Metrics from 'views/metrics'
 import Dialog from 'material-ui/Dialog';
 
 import Drawer from 'views/drawer'
 import Bar from 'views/bar'
 
-import Home from 'Home';
-import Item from 'Item';
-import NoMatch from 'NoMatch';
-import 'App.css'
+import { NotFound } from 'views/error';
 import 'material-design-icons/iconfont/material-icons.css'
-import { closeDialog } from 'actions'
+import { closeDialog } from 'views/dialog/actions'
 import { dispatcher } from 'config/poller/inject'
 import Dispatcher from '../dispatcher';
-
-const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
@@ -39,37 +35,18 @@ const styles = theme => ({
     width: '100%',
     height: '100%',
   },
-  appBar: {
-    position: 'absolute',
-    zIndex: theme.zIndex.navDrawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginLeft: 12,
-    marginRight: 36,
-  },
   content: {
     width: '100%',
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: 24,
-    maxHeight: 'calc(100% - 56px)',
-    marginTop: 56,
-    overflowY: 'scroll',
-    [theme.breakpoints.up('sm')]: {
+    position: 'fixed',
+    [theme.breakpoints.up('xs')]: {
+      top: 56,
+      height: 'calc(100% - 56px)',
+      maxHeight: 'calc(100% - 56px)',
+    },
+    [theme.breakpoints.up('md')]: {
+      top: 64,
+      height: 'calc(100% - 56px)',
       maxHeight: 'calc(100% - 64px)',
-      marginTop: 64,
     },
   },
 });
@@ -88,11 +65,12 @@ class App extends React.Component {
           <Drawer/>
           <main className={classes.content}>
             <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/items" component={Dashboard} />
-              <Route path="/item/:id" component={Item} />
+              {/* <Route exact path="/" component={Home} /> */}
+              <Route exact path="/dashboard" component={Dashboard} />
               <Route exact path="/devices" component={Devices} />
-              <Route component={NoMatch}/>
+              <Route exact path="/events" component={Events} />
+              <Route exact path="/metrics" component={Metrics} />
+              <Route component={NotFound}/>
             </Switch>
             <Dialog open={isDialogOpen} onClose={closeDialog}>
               { this.props.dialogContent }
